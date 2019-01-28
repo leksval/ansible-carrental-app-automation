@@ -1,0 +1,62 @@
+---
+- include_vars:
+    file: ../vars/stats.yml
+- name: "Install influx DB"
+  yum:
+    name: "{{influxDb_url}}"
+    state: present
+- service:
+    name: influxdb
+    state: restarted
+- name: "Install grafana"
+  yum:
+    name: "{{grafana_url}}"
+    state: present
+- name: "configure grafana"
+  template:
+    src: templates/grafana.ini
+    dest: /etc/grafana/grafana.ini
+- service:
+    name: grafana-server
+    state: restarted
+- name: Create influxdb datasource
+  grafana_datasource:
+    name: "my-influx"
+    grafana_url: "http://127.0.0.1:8081"
+    grafana_user: "admin"
+    grafana_password: "admin"
+    org_id: "1"
+    ds_type: "influxdb"
+    url: "http://{{ metric_storage_ip }}:8086"
+    database: "metrics"
+#- name: Copy dashboard to remote location
+#  copy:
+#    src: graphs/nginx.json
+#    dest: /tmp/grafana_nginx.json
+#    mode: 0644
+#- name: Copy dashboard to remote location
+#  copy:
+#    src: graphs/resources.json
+#    dest: /tmp/grafana_resources.json
+#    mode: 0644
+#- name: Import Grafana dashboard #1
+#  grafana_dashboard:
+#    grafana_url: "http://127.0.0.1:8081"
+#    grafana_user: "admin"
+#    grafana_password: "admin"
+#    state: present
+#    message: Updated by ansible
+#    overwrite: yes
+#    path: /tmp/grafana_nginx.json
+#- name: Import Grafana dashboard #1
+#  grafana_dashboard:
+#    grafana_url: "http://127.0.0.1:8081"
+#    grafana_user: "admin"
+#    grafana_password: "admin"
+#    state: present
+#    message: Updated by ansible
+#    overwrite: yes
+#    path: /tmp/grafana_resources.json
+- service:
+    name: influxdb
+    state: restarted

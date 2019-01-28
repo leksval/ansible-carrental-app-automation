@@ -1,0 +1,4 @@
+---
+  jar_location: ~/environment/200400/adsk_ultimate/rentalapp/target/rentalapp-0.0.1-SNAPSHOT.jar
+  app_location: /opt/carrental/rentalapp.jar
+  app_user: rentalappuser

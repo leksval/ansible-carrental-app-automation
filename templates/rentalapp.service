@@ -1,0 +1,12 @@
+[Unit]
+Description=rentalapp
+After=network-online.target
+
+[Service]
+Type=simple
+User={{app_user}}
+ExecStart=/usr/bin/java -jar {{app_location}}
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

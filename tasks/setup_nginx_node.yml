@@ -1,0 +1,55 @@
+---
+- name: "install exta packages repo"
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+    state: present
+- name: "install nginx"
+  shell: "amazon-linux-extras install nginx1.12"
+- name: Stop nginx
+  service:
+    name: nginx
+    state: stopped
+- name: create letsencrypt directory
+  file:
+    name: /var/www/letsencrypt
+    state: directory
+- name: create sites-enables directory
+  file:
+    name: /etc/nginx/sites-enabled
+    state: directory
+####
+- name: Install system nginx config
+  template:
+    src: ../templates/nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+- name: Install nginx site for letsencrypt requests
+  template:
+    src: ../templates/nginx-http.j2
+    dest: /etc/nginx/sites-enabled/http
+- name: install python 3
+  yum:
+    name: python3
+    state: present
+- name: install certbot dependencies
+  shell: pip3 install cryptography
+- name: install certbot nginx
+  shell: pip3 install certbot-nginx
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted
+- name: Create letsencrypt certificate
+  shell: /usr/local/bin/certbot  certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ domain_name }}
+  args:
+    creates: /etc/letsencrypt/live/{{ domain_name }}
+- name: Generate dhparams
+  shell: openssl dhparam -out /etc/nginx/dhparams.pem 2048
+  args:
+    creates: /etc/nginx/dhparams.pem
+- name: Install nginx site for specified site
+  template:
+    src: ../templates/nginx-le.j2
+    dest: /etc/nginx/sites-enabled/le
+- name: Reload nginx to activate specified site
+  service: name=nginx state=restarted
+###

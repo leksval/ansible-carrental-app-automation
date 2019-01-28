@@ -1,0 +1,24 @@
+---
+- hosts: nginx
+  tasks:
+    - include_tasks: tasks/setup_nginx_node.yml
+  become: yes
+#- hosts: db
+#  tasks:
+#    - include_tasks: tasks/init_db.yml
+- hosts: stat_server
+  tasks:
+    - include_tasks: stat_nodes/stats.yml
+  become: yes
+- hosts: app_nodes
+  tasks:
+    - include_tasks: tasks/init_app.yml
+  become: yes
+- hosts: stat_server:app_nodes
+  tasks:
+    - include_tasks: stat_nodes/telegraf.yml
+  become: yes
+- hosts: nginx
+  tasks:
+    - include_tasks: stat_nodes/telegraf_nginx.yml
+  become: yes

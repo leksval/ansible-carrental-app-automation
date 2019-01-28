@@ -1,0 +1,5 @@
+---
+  project_name: "rentalapp"
+  db_name: "{{ project_name }}"
+  db_user: "user_{{ project_name }}"
+  db_password: "123surprise"

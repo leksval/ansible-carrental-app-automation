@@ -1,0 +1,32 @@
+---
+- include_vars:
+    file: ../vars/db_config.yml
+- name: "install mysql"
+  yum:
+    name: "{{packages}}"
+  vars:
+    packages:
+      - mariadb-server
+      - mariadb
+      - MySQL-python
+      - gcc
+  become: yes
+
+- name: Start service mysql, if not started
+  service:
+    name: mariadb
+    state: restarted
+  become: yes
+- name: prepare mysql
+  mysql_db:
+    name: "{{ db_name }}"
+    state: present
+  become: yes
+- name: "Add new user to mariadb"
+  mysql_user:
+    name: "{{ db_user }}"
+    login_user: "root"
+    password: "{{ db_password }}"
+    host: "172.31.20.121"
+    priv: '*.*:ALL'
+    state: present
