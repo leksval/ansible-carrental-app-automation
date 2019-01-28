@@ -3,8 +3,9 @@
 
 ## Features:
 * Automatic Let's Encrypt certificate
-* Load balanced via nginx (with stats gathering from all the nodes)
+* Load balanced using nginx with stats from nodes
 * Grafana support (With influxDB)
+* my digital tears :)
 
 
 ## License
