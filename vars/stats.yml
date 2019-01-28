@@ -1,5 +1,5 @@
 ---
   telegraf_url: https://dl.influxdata.com/telegraf/releases/telegraf-1.8.3-1.x86_64.rpm
-  metric_storage_ip: 35.158.181.169 # The ip of influxdb database (which stores logs n' stuff. )
+  metric_storage_ip: 35.158.181.169 # The ip of influxdb database
   influxDb_url: https://dl.influxdata.com/influxdb/releases/influxdb-1.7.1.x86_64.rpm
   grafana_url: https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-5.3.4-1.x86_64.rpm
