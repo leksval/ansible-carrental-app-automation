@@ -1,11 +1,11 @@
-# Car Rental Application ansible setup
+# Car Rental Application ansible setup on remote servers
 
 
 ## Features:
 * Automatic Let's Encrypt certificate
 * Load balanced using nginx with stats from nodes
 * Grafana support (With influxDB)
-* my digital tears :)
+* 
 
 
 ## License
