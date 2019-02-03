@@ -5,7 +5,7 @@
 * Automatic Let's Encrypt certificate
 * Load balanced using nginx with stats from nodes
 * Grafana support (With influxDB)
-* 
+
 
 
 ## License
